@@ -17,7 +17,7 @@ export default async function Tablesalary() {
 
     const [user] = await Promise.all([getUserById(Number(session?.user.id))]);
 
-    // console.log(user)
+    console.log(user)
 
     return (
         <div>

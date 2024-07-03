@@ -38,8 +38,8 @@ export default function SalaryTableUser({ salary, user, Request, RequesUserWorkc
     },[isConditionMet])
 
     const modal = useModal();
-    const Revenue = (salary.Revenues);
-    const expenses = (salary.Expenses);
+    const Revenue = (salary?.Revenues);
+    const expenses = (salary?.Expenses);
 
     const Ex = expenses;
     const Re = Revenue;

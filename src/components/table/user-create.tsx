@@ -4,7 +4,7 @@ import { toast } from "sonner"
 import { createUser } from "@/utils/action"
 import { useModal } from "@/components/modal/provider"
 import { useState } from "react"
-import { Sex } from "@prisma/client"
+// import { Sex } from "@prisma/client"
 import { format, parseISO } from 'date-fns';
 
 
@@ -121,8 +121,8 @@ const FormCreate = ({ affil, data }: props) => {
                                 className=" border px-3 py-2 rounded-md "
                             >
                                 <option value="">เพศ</option>
-                                <option value={Sex.MAN}>ชาย</option>
-                                <option value={Sex.WOMAN}>หญิง</option>
+                                {/* <option value={Sex.MAN}>ชาย</option>
+                                <option value={Sex.WOMAN}>หญิง</option> */}
 
                             </select>
 
