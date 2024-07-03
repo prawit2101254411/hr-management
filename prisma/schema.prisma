@@ -1,0 +1,201 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id         Int       @id @default(autoincrement())
+  Affil      Affil?     @relation(fields: [AffilId], references: [id])
+  AffilId     Int?
+  Groups     Group?     @relation(fields: [GroupsId], references: [id])
+  GroupsId    Int?
+  Position     Position?   @relation(fields: [PositionId], references: [id])
+  PositionId   Int?
+  salary       Salary? 
+  Logs        Logs?
+  RequestUser     RequestUser?
+  RequesUserWorkcertificate RequesUserWorkcertificate?
+  NewpositionUser NewpositionUser?
+  level    Level?      @default(USER)
+  status   Status?     @default(true)
+  u_num    String?
+  Avatar   String?     @db.VarChar(1000)
+  username String      @unique
+  password String
+  fname    String?
+  lname    String?
+  sex      Sex?      @default(MAN)
+  email    String?      @unique
+  phone    String? 
+  birthday  String?    
+  datestart DateTime?   @unique
+  datestop  DateTime?   @unique  
+}
+model Contact {
+  id      Int    @id @default(autoincrement())
+  email   String 
+  phone   String
+  firstnumber String
+  text String
+}
+enum Sex {
+  MAN
+  WOMAN
+}
+
+enum Level {
+  USER
+  ADMIN
+  HR
+}
+enum Status {
+  true
+  false
+}
+model Affil {
+  id          Int       @id @default(autoincrement())
+  User      User[]
+  Group     Group[]
+  Affilname String
+} 
+model Group {
+  id          Int       @id @default(autoincrement())
+  User       User[]
+  Affil     Affil?     @relation(fields: [AffilId], references: [id])
+  AffilId    Int?
+  Position  Position[]
+  Groupname String
+} 
+model Logs {
+  id     Int     @id @default(autoincrement())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int        @unique
+  SalaryCertificate SalaryCertificate[]
+  Requestsalarycertificate Requestsalarycertificate[]
+}
+model SalaryCertificate {
+  id          Int        @id @default(autoincrement())
+  Logs        Logs?      @relation(fields: [Logsid ], references: [id])
+  Logsid      Int?    
+  nameUser    String?
+  Content     String?    @db.VarChar(500)
+  date        String?
+} 
+model Requestsalarycertificate {
+  id         Int          @id @default(autoincrement())
+  Logs        Logs?      @relation(fields: [Logsid ], references: [id])
+  Logsid      Int?
+  nameUser   String?
+  coment     String?      @db.VarChar(500)
+  date       String?
+}
+model RequestUser {
+  id         Int         @id @default(autoincrement())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int        @unique
+  text        String?
+  Hrname      String?
+  Status      Status?    
+  dateTime     String?
+}
+model RequesUserWorkcertificate {
+    id         Int         @id @default(autoincrement())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int        @unique
+  text        String?
+  Hrname      String?
+  Status      Status?    
+  dateTime     String?
+}
+model Position {
+  id          Int        @id @default(autoincrement())
+  User       User[]
+  Group     Group?      @relation(fields: [GroupId], references: [id])
+  GroupId     Int?
+  PostypeId    Int?
+  Postypes    Postype?   @relation(fields: [PostypeId], references: [id])
+  Codes      Int?
+  Posnames   String?
+  levels     String?
+  salarys    Int?
+}
+model Postype {
+  id          Int        @id @default(autoincrement())
+  Postype    Position[]
+  Postypename String?
+}
+model NewpositionUser {
+  id          Int        @id @default(autoincrement())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int        @unique
+  newposition String?
+  newlevel    String?
+  newsalary   Int?
+  originalpos  originalpos[]
+  dateUpdate String?
+}
+model originalpos {
+  id          Int        @id @default(autoincrement())
+  NewpositionUser     NewpositionUser?   @relation(fields: [NewpositionUserId], references: [id])
+  NewpositionUserId   Int?
+  Startdate  String?    
+  stopdate   String?       
+  origipos   String?
+  oldlevel   String?
+  oldsalary  Int?
+  dateUpdate String?
+}
+model Salary {
+  id          Int        @id @default(autoincrement())
+  user        User   @relation(fields: [userId], references: [id])
+  userId      Int    @unique
+  Expenses    Expenses?
+  Revenues     Revenue? 
+  date       DateTime?
+  datetime   DateTime    @updatedAt    
+}
+model Revenue {
+  id              Int        @id @default(autoincrement())
+  salary          Salary   @relation(fields: [salaryId], references: [id])
+  salaryId         Int     @unique
+  salarys          Float?
+  Posallowan       Float?
+  Compensation     Float?
+  Childtuition     Float?
+  Houserent        Float?
+  costofliving     Float?
+  obtainback       Float?
+  fullsalary       Float? 
+  Medicalexpenses  Float?
+  tax              Float?
+  BrokenGPF        Float?
+}
+model Expenses {
+  id              Int        @id @default(autoincrement())
+  salary          Salary   @relation(fields: [salaryId], references: [id])
+  salaryId        Int      @unique
+  incometax       Float?
+  GPF             Float?
+  CPS             Float?
+  Student         Float? 
+  GHBank          Float?
+  Krungthai       Float?
+  Nakho           Float?
+  SavingsBank     Float?
+  PHSC            Float?
+  PAOC            Float?
+  Welfarefund     Float?
+  PAOF            Float?
+  TeachersCoop    Float?
+  IslamicBank     Float?
+  socialsecurity  Float?
+  Salarydropped   Float?
+  WiratCoop       Float?
+  AFCM            Float?
+}
