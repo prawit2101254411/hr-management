@@ -5,6 +5,7 @@ import NavbarPage from "@/components/homepageUi/NavbarPage"
 import Footer from "@/components/homepageUi/Footer"
 
 export default function Page() {
+  // Hello
   return (
     <div>
       <div className=" fixed w-screen h-screen">
